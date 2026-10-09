@@ -1,0 +1,51 @@
+<!-- templates/form.html : dipakai untuk tambah DAN edit -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if mode == "edit" %}Update{% else %}Tambah{% endif %} Mahasiswa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .error { color: #b00020; border: 1px solid #b00020; padding: 8px 16px; width: 360px; }
+    </style>
+</head>
+<body>
+    <h2>{% if mode == "edit" %}Update Data Mahasiswa{% else %}Tambah Mahasiswa Baru{% endif %}</h2>
+
+    <!-- Pesan kesalahan dari validasi di controller -->
+    {% if errors %}
+    <div class="error">
+        <b>Data ditolak:</b>
+        <ul>
+        {% for e in errors %}
+            <li>{{ e }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <form method="POST"
+          action="{% if mode == 'edit' %}/mahasiswa/{{ m.nim }}/edit{% else %}/mahasiswa/new{% endif %}">
+        <label>NIM:</label><br>
+        {% if mode == "edit" %}
+        <input type="text" value="{{ m.nim }}" disabled> (tidak bisa diubah)<br><br>
+        {% else %}
+        <input type="text" name="nim" value="{{ m.nim }}"><br><br>
+        {% endif %}
+
+        <label>Nama:</label><br>
+        <input type="text" name="nama" value="{{ m.nama }}"><br><br>
+
+        <label>Program Studi:</label><br>
+        <input type="text" name="program_studi" value="{{ m.program_studi }}"><br><br>
+
+        <label>Angkatan:</label><br>
+        <input type="text" name="angkatan" value="{{ m.angkatan }}" placeholder="contoh: 2023"><br><br>
+
+        <label>IPK:</label><br>
+        <input type="text" name="ipk" value="{{ m.ipk }}" placeholder="0.00 - 4.00"><br><br>
+
+        <button type="submit">Simpan</button>
+        <a href="/mahasiswa"><button type="button">Batal</button></a>
+    </form>
+</body>
+</html>

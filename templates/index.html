@@ -1,0 +1,51 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Mahasiswa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #999; padding: 6px 12px; text-align: left; }
+        th { background: #eee; }
+    </style>
+</head>
+<body>
+    <h2>Daftar Mahasiswa</h2>
+    <p><a href="/mahasiswa/new"><button type="button">+ Tambah Mahasiswa</button></a></p>
+
+    {% if daftar %}
+    <table>
+        <tr>
+            <th>NIM</th>
+            <th>Nama</th>
+            <th>Program Studi</th>
+            <th>Angkatan</th>
+            <th>IPK</th>
+            <th>Lama Studi (tahun)</th>
+            <th>Aksi</th>
+        </tr>
+        {% for m in daftar %}
+        <tr>
+            <td>{{ m.nim }}</td>
+            <td>{{ m.nama }}</td>
+            <td>{{ m.program_studi }}</td>
+            <td>{{ m.angkatan }}</td>
+            <td>{{ "%.2f"|format(m.ipk) }}</td>
+            <td>{{ m.lama_studi }}</td>
+            <td>
+                <a href="/mahasiswa/{{ m.nim }}"><button type="button">Detail</button></a>
+                <a href="/mahasiswa/{{ m.nim }}/edit"><button type="button">Update</button></a>
+                <form action="/mahasiswa/{{ m.nim }}/delete" method="POST" style="display:inline"
+                      onsubmit="return confirm('Yakin hapus data mahasiswa ini?')">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>Belum ada data mahasiswa.</p>
+    {% endif %}
+</body>
+</html>
